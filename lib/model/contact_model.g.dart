@@ -19,16 +19,17 @@ class ContactModelAdapter extends TypeAdapter<ContactModel> {
     return ContactModel(
       firstName: fields[0] as String,
       lastName: fields[1] as String,
-      email: fields[2] == null ? '' : fields[2] as String?,
       phone: fields[3] as String,
+      birthdayDate: fields[6] as String,
+      email: fields[2] == null ? '' : fields[2] as String,
       avatar: fields[4] as Uint8List?,
-    );
+    )..isFavorite = fields[5] == null ? false : fields[5] as bool;
   }
 
   @override
   void write(BinaryWriter writer, ContactModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.firstName)
       ..writeByte(1)
@@ -38,7 +39,11 @@ class ContactModelAdapter extends TypeAdapter<ContactModel> {
       ..writeByte(3)
       ..write(obj.phone)
       ..writeByte(4)
-      ..write(obj.avatar);
+      ..write(obj.avatar)
+      ..writeByte(5)
+      ..write(obj.isFavorite)
+      ..writeByte(6)
+      ..write(obj.birthdayDate);
   }
 
   @override
