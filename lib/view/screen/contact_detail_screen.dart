@@ -4,8 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:seven_learn_exercise_four/gen/assets.gen.dart';
 import 'package:seven_learn_exercise_four/model/contact_model.dart';
 import 'package:seven_learn_exercise_four/view/screen/bloc/contact_list_bloc.dart';
-import 'package:seven_learn_exercise_four/view/screen/contact_avatar.dart';
 import 'package:seven_learn_exercise_four/view/screen/edit_contact_screen.dart';
+import 'package:seven_learn_exercise_four/view/widget/contact_avatar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ContactDetailScreen extends StatefulWidget {
@@ -41,6 +41,7 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
                 } else if (value == 2) {
                   BlocProvider.of<ContactBloc>(context)
                       .add(ContactDeleteData(contactModel));
+                  Navigator.pop(context);
                 }
               },
               itemBuilder: (context) => [
@@ -50,30 +51,35 @@ class _ContactDetailScreenState extends State<ContactDetailScreen> {
             ),
           ],
         ),
-        body: BlocListener<ContactBloc, ContactState>(
-          listenWhen: (previous, current) =>
+        body: BlocBuilder<ContactBloc, ContactState>(
+          buildWhen: (previous, current) =>
               current is ContactListSuccessOperation,
-          listener: (context, state) => Navigator.of(context).pop(),
-          child: ListView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
-            children: [
-              ContactAvatar(
-                  avatarImageData: contactModel.avatar,
-                  placeholder: const SizedBox()),
-              const SizedBox(height: 20),
-              Text(
-                '${contactModel.firstName} ${contactModel.lastName}',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 24,
+          builder: (context, state) {
+            if (state is ContactListSuccessOperation) {
+              contactModel = state.contact;
+            }
+            return ListView(
+              physics: const BouncingScrollPhysics(),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
+              children: [
+                ContactAvatar(
+                    avatarImageData: contactModel.avatar,
+                    placeholder: const SizedBox()),
+                const SizedBox(height: 20),
+                Text(
+                  '${contactModel.firstName} ${contactModel.lastName}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 24,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              _ContactActions(contactModel: contactModel),
-              _ContactDetail(contactModel: contactModel),
-            ],
-          ),
+                const SizedBox(height: 20),
+                _ContactActions(contactModel: contactModel),
+                _ContactDetail(contactModel: contactModel),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -92,7 +98,7 @@ class _ContactActions extends StatelessWidget {
       children: [
         IconButton(
             onPressed: () async {
-              Uri sms = Uri.parse('mail:${contactModel.phone}?body=');
+              Uri sms = Uri.parse('sms:${contactModel.phone}?body=');
               var launcher = await launchUrl(sms);
               if (!launcher) {
                 throw 'Could not launch ${contactModel.phone}';

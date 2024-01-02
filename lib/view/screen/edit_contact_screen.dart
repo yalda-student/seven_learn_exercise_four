@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:seven_learn_exercise_four/gen/assets.gen.dart';
 import 'package:seven_learn_exercise_four/model/contact_model.dart';
 import 'package:seven_learn_exercise_four/view/screen/bloc/contact_list_bloc.dart';
-import 'package:seven_learn_exercise_four/view/screen/contact_avatar.dart';
+import 'package:seven_learn_exercise_four/view/widget/contact_avatar.dart';
 
 Uint8List? avatarImageData;
 
@@ -48,6 +49,10 @@ class _EditContactScreenState extends State<EditContactScreen> {
         emailController.text = contactModel!.email;
         phoneController.text = contactModel!.phone;
         birthdayController.text = contactModel!.birthdayDate;
+        log(contactModel!.toString());
+        log(contactModel!.avatar!.length.toString());
+        avatarImageData = Uint8List.fromList(contactModel!.avatar!);
+        log(avatarImageData!.toString());
       }
     });
   }
@@ -69,79 +74,70 @@ class _EditContactScreenState extends State<EditContactScreen> {
                 icon: SvgPicture.asset(Assets.icon.save))
           ],
         ),
-        body: BlocListener<ContactBloc, ContactState>(
-          listenWhen: (previous, current) =>
-              current is ContactListSuccessOperation,
-          listener: (context, state) {
-            if (state is ContactListSuccessOperation) {
-              Navigator.pop(context);
-            }
-          },
-          child: Form(
-              key: _formKey,
-              child: ListView(
-                physics: const BouncingScrollPhysics(),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
-                children: [
-                  const _AvatarPicker(),
-                  const SizedBox(height: 50),
-                  TextFormField(
-                    controller: firstNameController,
-                    decoration: const InputDecoration(hintText: 'First Name'),
-                    textInputAction: TextInputAction.next,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Fill first name';
-                      }
-                      return null;
-                    },
-                  ),
-                  space,
-                  TextFormField(
-                    controller: lastNameController,
-                    decoration: const InputDecoration(hintText: 'Last Name'),
-                    textInputAction: TextInputAction.next,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return '';
-                      }
-                      return null;
-                    },
-                  ),
-                  space,
-                  TextFormField(
-                    controller: phoneController,
-                    decoration: const InputDecoration(hintText: 'Phone'),
-                    textInputAction: TextInputAction.next,
-                    keyboardType: TextInputType.phone,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return '';
-                      }
-                      return null;
-                    },
-                  ),
-                  space,
-                  TextFormField(
-                    controller: emailController,
-                    decoration: const InputDecoration(hintText: 'Email'),
-                    textInputAction: TextInputAction.next,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return '';
-                      }
-                      return null;
-                    },
-                  ),
-                  space,
-                  _DatePicker(
-                    textController: birthdayController,
-                  ),
-                ],
-              )),
-        ),
+        body: Form(
+            key: _formKey,
+            child: ListView(
+              physics: const BouncingScrollPhysics(),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
+              children: [
+                const _AvatarPicker(),
+                const SizedBox(height: 50),
+                TextFormField(
+                  controller: firstNameController,
+                  decoration: const InputDecoration(hintText: 'First Name'),
+                  textInputAction: TextInputAction.next,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Fill first name';
+                    }
+                    return null;
+                  },
+                ),
+                space,
+                TextFormField(
+                  controller: lastNameController,
+                  decoration: const InputDecoration(hintText: 'Last Name'),
+                  textInputAction: TextInputAction.next,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return '';
+                    }
+                    return null;
+                  },
+                ),
+                space,
+                TextFormField(
+                  controller: phoneController,
+                  decoration: const InputDecoration(hintText: 'Phone'),
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.phone,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return '';
+                    }
+                    return null;
+                  },
+                ),
+                space,
+                TextFormField(
+                  controller: emailController,
+                  decoration: const InputDecoration(hintText: 'Email'),
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return '';
+                    }
+                    return null;
+                  },
+                ),
+                space,
+                _DatePicker(
+                  textController: birthdayController,
+                ),
+              ],
+            )),
       ),
     );
   }
@@ -168,6 +164,7 @@ class _EditContactScreenState extends State<EditContactScreen> {
       }
 
       BlocProvider.of<ContactBloc>(context).add(ContactSaveData(contactModel!));
+      Navigator.pop(context);
     }
   }
 }

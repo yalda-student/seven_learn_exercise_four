@@ -18,4 +18,8 @@ class ContactListFavoritesSuccess extends ContactState {
   ContactListFavoritesSuccess(this.contactList);
 }
 
-class ContactListSuccessOperation extends ContactState {}
+class ContactListSuccessOperation extends ContactState {
+  final ContactModel contact;
+
+  ContactListSuccessOperation(this.contact);
+}

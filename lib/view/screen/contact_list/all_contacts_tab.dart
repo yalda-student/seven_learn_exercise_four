@@ -11,6 +11,8 @@ class AllContactTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ContactBloc, ContactState>(
         bloc: BlocProvider.of<ContactBloc>(context)..add(ContactLoadData()),
+        buildWhen: (previous, current) =>
+            current is! ContactListSuccessOperation,
         builder: (context, state) {
           if (state is ContactListAllDataSuccess) {
             return ListView.separated(

@@ -12,6 +12,8 @@ class FavoriteContactTab extends StatelessWidget {
     return BlocBuilder<ContactBloc, ContactState>(
         bloc: BlocProvider.of<ContactBloc>(context)
           ..add(ContactLoadFavorites()),
+        buildWhen: (previous, current) =>
+            current is! ContactListSuccessOperation,
         builder: (context, state) {
           if (state is ContactListFavoritesSuccess) {
             return ListView.separated(

@@ -31,6 +31,6 @@ class ContactModel extends HiveObject {
 
   @override
   String toString() {
-    return 'ContactModel{firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, avatar: $avatar, isFavorite: $isFavorite}';
+    return 'ContactModel{firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, avatar: ${avatar!.length}, isFavorite: $isFavorite}';
   }
 }

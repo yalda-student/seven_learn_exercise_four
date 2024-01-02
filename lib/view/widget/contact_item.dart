@@ -11,7 +11,10 @@ class ContactItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () => Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => const ContactDetailScreen(),
+          builder: (context) {
+            // BlocProvider.of<ContactBloc>(context).add(ContactListSuccessOperation(contact));
+            return const ContactDetailScreen();
+          },
           settings: RouteSettings(arguments: contact))),
       title: Text('${contact.firstName} ${contact.lastName}'),
       leading: CircleAvatar(
@@ -22,11 +25,10 @@ class ContactItem extends StatelessWidget {
           child: contact.avatar == null
               ? Text(
                   contact.firstName[0].toUpperCase(),
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
-                      fontFamily: DefaultTextStyle.of(context).style.fontFamily,
-                      fontWeight: FontWeight.w700),
+                      fontWeight: FontWeight.w600),
                 )
               : null),
     );
