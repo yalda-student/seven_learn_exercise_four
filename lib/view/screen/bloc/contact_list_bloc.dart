@@ -20,16 +20,24 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
         } else {
           emit(ContactListAllDataSuccess(contactList));
         }
+      } else if (event is ContactLoadFavorites) {
+        final contactList =
+            box.values.where((element) => element.isFavorite).toList();
+        if (contactList.isEmpty) {
+          emit(ContactListEmptyState());
+        } else {
+          emit(ContactListFavoritesSuccess(contactList));
+        }
       } else if (event is ContactSaveData) {
         if (event.contactModel.isInBox) {
           await event.contactModel.save();
         } else {
           await box.add(event.contactModel);
         }
-        emit(ContactListEmptyOperation());
+        emit(ContactListSuccessOperation());
       } else if (event is ContactDeleteData) {
         await box.delete(event.contactModel.key);
-        emit(ContactListEmptyOperation());
+        emit(ContactListSuccessOperation());
       }
     });
   }

@@ -15,6 +15,7 @@ class AllContactTab extends StatelessWidget {
           if (state is ContactListAllDataSuccess) {
             return ListView.separated(
               physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.only(top: 8),
               itemCount: state.contactList.length,
               itemBuilder: (context, index) =>
                   ContactItem(contact: state.contactList[index]),

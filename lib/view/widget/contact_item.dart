@@ -17,15 +17,18 @@ class ContactItem extends StatelessWidget {
       leading: CircleAvatar(
           radius: 23,
           backgroundColor: Theme.of(context).colorScheme.secondary,
-          child: contact.avatar != null
-              ? Image.memory(contact.avatar!)
-              : Text(
+          foregroundImage:
+              contact.avatar != null ? MemoryImage(contact.avatar!) : null,
+          child: contact.avatar == null
+              ? Text(
                   contact.firstName[0].toUpperCase(),
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
+                      fontFamily: DefaultTextStyle.of(context).style.fontFamily,
                       fontWeight: FontWeight.w700),
-                )),
+                )
+              : null),
     );
   }
 }

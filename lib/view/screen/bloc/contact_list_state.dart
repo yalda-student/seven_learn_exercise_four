@@ -18,4 +18,4 @@ class ContactListFavoritesSuccess extends ContactState {
   ContactListFavoritesSuccess(this.contactList);
 }
 
-class ContactListEmptyOperation extends ContactState {}
+class ContactListSuccessOperation extends ContactState {}

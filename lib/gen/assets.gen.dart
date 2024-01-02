@@ -49,6 +49,9 @@ class $AssetsIconGen {
   /// File path: assets/icon/save.svg
   String get save => 'assets/icon/save.svg';
 
+  /// File path: assets/icon/unfavorite.svg
+  String get unfavorite => 'assets/icon/unfavorite.svg';
+
   /// List of all assets
   List<dynamic> get values => [
         addPhoto,
@@ -62,7 +65,8 @@ class $AssetsIconGen {
         emptyState,
         favorite,
         message,
-        save
+        save,
+        unfavorite
       ];
 }
 

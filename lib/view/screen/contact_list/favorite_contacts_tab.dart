@@ -13,9 +13,10 @@ class FavoriteContactTab extends StatelessWidget {
         bloc: BlocProvider.of<ContactBloc>(context)
           ..add(ContactLoadFavorites()),
         builder: (context, state) {
-          if (state is ContactListAllDataSuccess) {
+          if (state is ContactListFavoritesSuccess) {
             return ListView.separated(
               physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.only(top: 8),
               itemCount: state.contactList.length,
               itemBuilder: (context, index) =>
                   ContactItem(contact: state.contactList[index]),

@@ -7,19 +7,19 @@ part 'contact_model.g.dart';
 @HiveType(typeId: 0)
 class ContactModel extends HiveObject {
   @HiveField(0)
-  final String firstName;
+  String firstName;
   @HiveField(1)
-  final String lastName;
+  String lastName;
   @HiveField(2, defaultValue: '')
-  final String email;
+  String email;
   @HiveField(3)
-  final String phone;
+  String phone;
   @HiveField(4)
-  final Uint8List? avatar;
+  Uint8List? avatar;
   @HiveField(5, defaultValue: false)
   bool isFavorite = false;
   @HiveField(6)
-  final String birthdayDate;
+  String birthdayDate;
 
   ContactModel(
       {required this.firstName,
