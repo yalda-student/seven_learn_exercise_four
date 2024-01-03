@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:seven_learn_exercise_four/gen/assets.gen.dart';
 import 'package:seven_learn_exercise_four/view/screen/bloc/contact_list_bloc.dart';
 import 'package:seven_learn_exercise_four/view/widget/contact_item.dart';
+import 'package:seven_learn_exercise_four/view/widget/empty_state.dart';
 
 class FavoriteContactTab extends StatelessWidget {
   const FavoriteContactTab({super.key});
@@ -29,7 +29,7 @@ class FavoriteContactTab extends StatelessWidget {
               ),
             );
           }
-          return Center(child: Assets.icon.emptyState.image());
+          return const Center(child: EmptyState());
         });
   }
 }

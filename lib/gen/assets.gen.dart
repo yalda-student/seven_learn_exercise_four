@@ -33,8 +33,17 @@ class $AssetsIconGen {
   /// File path: assets/icon/contact.svg
   String get contact => 'assets/icon/contact.svg';
 
+  /// File path: assets/icon/corrupted.svg
+  String get corrupted => 'assets/icon/corrupted.svg';
+
   /// File path: assets/icon/email.svg
   String get email => 'assets/icon/email.svg';
+
+  /// File path: assets/icon/empty.svg
+  String get empty => 'assets/icon/empty.svg';
+
+  /// File path: assets/icon/empty2.svg
+  String get empty2 => 'assets/icon/empty2.svg';
 
   /// File path: assets/icon/empty_state.jpg
   AssetGenImage get emptyState =>
@@ -61,7 +70,10 @@ class $AssetsIconGen {
         circularCall,
         circularEmail,
         contact,
+        corrupted,
         email,
+        empty,
+        empty2,
         emptyState,
         favorite,
         message,

@@ -34,9 +34,9 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
           emit(ContactListSuccessOperation(event.contactModel));
         } else {
           await box.add(event.contactModel);
+          _contactList.add(event.contactModel);
           emit(ContactListAllDataSuccess(box.values.toList()));
         }
-        // emit(ContactListSuccessOperation());
       } else if (event is ContactDeleteData) {
         await box.delete(event.contactModel.key);
         _getAllContacts(emit);

@@ -52,7 +52,8 @@ class _EditContactScreenState extends State<EditContactScreen> {
         log(contactModel!.toString());
         log(contactModel!.avatar!.length.toString());
         avatarImageData = Uint8List.fromList(contactModel!.avatar!);
-        log(avatarImageData!.toString());
+        log(avatarImageData!.sublist(0, 50).toString());
+        setState(() {});
       }
     });
   }
@@ -81,7 +82,21 @@ class _EditContactScreenState extends State<EditContactScreen> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
               children: [
-                const _AvatarPicker(),
+                GestureDetector(
+                  onTap: () async {
+                    final ImagePicker picker = ImagePicker();
+                    final XFile? image =
+                        await picker.pickImage(source: ImageSource.camera);
+                    if (image != null) {
+                      avatarImageData =
+                          Uint8List.fromList(await image.readAsBytes());
+                      setState(() {});
+                    }
+                  },
+                  child: ContactAvatar(
+                      avatarImageData: avatarImageData,
+                      placeholder: SvgPicture.asset(Assets.icon.addPhoto)),
+                ),
                 const SizedBox(height: 50),
                 TextFormField(
                   controller: firstNameController,
@@ -218,6 +233,7 @@ class _AvatarPicker extends StatefulWidget {
 class _AvatarPickerState extends State<_AvatarPicker> {
   @override
   Widget build(BuildContext context) {
+    // log(avatarImageData!.sublist(0, 10).toString());
     return GestureDetector(
       onTap: () async {
         final ImagePicker picker = ImagePicker();
