@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -49,10 +48,7 @@ class _EditContactScreenState extends State<EditContactScreen> {
         emailController.text = contactModel!.email;
         phoneController.text = contactModel!.phone;
         birthdayController.text = contactModel!.birthdayDate;
-        log(contactModel!.toString());
-        log(contactModel!.avatar!.length.toString());
         avatarImageData = Uint8List.fromList(contactModel!.avatar!);
-        log(avatarImageData!.sublist(0, 50).toString());
         setState(() {});
       }
     });
@@ -77,22 +73,16 @@ class _EditContactScreenState extends State<EditContactScreen> {
         ),
         body: Form(
             key: _formKey,
+            onPopInvoked: (didPop) {
+              avatarImageData = null;
+            },
             child: ListView(
               physics: const BouncingScrollPhysics(),
               padding:
                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
               children: [
                 GestureDetector(
-                  onTap: () async {
-                    final ImagePicker picker = ImagePicker();
-                    final XFile? image =
-                        await picker.pickImage(source: ImageSource.camera);
-                    if (image != null) {
-                      avatarImageData =
-                          Uint8List.fromList(await image.readAsBytes());
-                      setState(() {});
-                    }
-                  },
+                  onTap: () async => await _takePhoto(),
                   child: ContactAvatar(
                       avatarImageData: avatarImageData,
                       placeholder: SvgPicture.asset(Assets.icon.addPhoto)),
@@ -116,7 +106,7 @@ class _EditContactScreenState extends State<EditContactScreen> {
                   textInputAction: TextInputAction.next,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return '';
+                      return 'Fill last name';
                     }
                     return null;
                   },
@@ -129,7 +119,7 @@ class _EditContactScreenState extends State<EditContactScreen> {
                   keyboardType: TextInputType.phone,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return '';
+                      return 'Fill phone';
                     }
                     return null;
                   },
@@ -142,7 +132,7 @@ class _EditContactScreenState extends State<EditContactScreen> {
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return '';
+                      return 'Fill email';
                     }
                     return null;
                   },
@@ -155,6 +145,15 @@ class _EditContactScreenState extends State<EditContactScreen> {
             )),
       ),
     );
+  }
+
+  Future<void> _takePhoto() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.camera);
+    if (image != null) {
+      avatarImageData = Uint8List.fromList(await image.readAsBytes());
+      setState(() {});
+    }
   }
 
   void _saveContact() {
@@ -215,37 +214,10 @@ class _DatePickerState extends State<_DatePicker> {
       },
       validator: (value) {
         if (value!.isEmpty) {
-          return '';
+          return 'Fill birthday';
         }
         return null;
       },
-    );
-  }
-}
-
-class _AvatarPicker extends StatefulWidget {
-  const _AvatarPicker();
-
-  @override
-  State<_AvatarPicker> createState() => _AvatarPickerState();
-}
-
-class _AvatarPickerState extends State<_AvatarPicker> {
-  @override
-  Widget build(BuildContext context) {
-    // log(avatarImageData!.sublist(0, 10).toString());
-    return GestureDetector(
-      onTap: () async {
-        final ImagePicker picker = ImagePicker();
-        final XFile? image = await picker.pickImage(source: ImageSource.camera);
-        if (image != null) {
-          avatarImageData = Uint8List.fromList(await image.readAsBytes());
-          setState(() {});
-        }
-      },
-      child: ContactAvatar(
-          avatarImageData: avatarImageData,
-          placeholder: SvgPicture.asset(Assets.icon.addPhoto)),
     );
   }
 }
